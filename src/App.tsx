@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [inputText, setInputText] = useState('')
+  const [inputText, setInputText] = useState<string>('')
 
   const handleSubmit = () => {
     console.log(inputText)
