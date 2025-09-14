@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
 import About from "./pages/About";
 import { Logo } from "./components/Logo";
-import Launch from "./pages/Launch";
 import { UserDataProvider } from "./providers/UserDataProvider";
 
 const App: React.FC = () => {
@@ -16,12 +15,12 @@ const App: React.FC = () => {
           <div className="container d-flex align-items-center">
             <div className="me-2 d-flex align-items-center">
               <div style={{ marginRight: "3px" }}>
-                <Link to="/Launch" style={{ display: "inline-block" }}>
+                <Link to="/" style={{ display: "inline-block" }}>
                   <Logo />
                 </Link>
               </div>
             </div>
-            <Link className="navbar-brand" to="/Launch">
+            <Link className="navbar-brand" to="/">
               AIPlug
             </Link>
             <button
@@ -61,7 +60,6 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/About" element={<About />} />
             <Route path="/SearchPage" element={<SearchPage />} />
-            <Route path="/Launch" element={<Launch />} />
           </Routes>
         </div>
       </Router>
