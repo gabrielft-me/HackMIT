@@ -11,7 +11,6 @@ import {
   Form,
   Navbar,
   Nav,
-  Carousel,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 

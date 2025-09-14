@@ -2,24 +2,15 @@ import { useState } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import { getUserProfile } from "../api/claude";
 import { fetchListOfLLMs } from "../api/fetchListOfLLMs";
-
-export interface UserProfile {
-  size_of_company: number;
-  current_model: string | null;
-  business_model: 'B2B' | 'B2C';
-  type_of_data: string;
-  amount_of_latency: number | null;
-  data_sensitivity: 'low' | 'medium' | 'high' | 'critical';
-  savings: number;
-}
+import { useUserDataProvider } from "../providers/UserDataProvider";
+import type { LLMProfile } from "../interfaces/LLMProfile";
 
 export const InputBox = () => {
-  const [inputText, setInputText] = useState<string>('')
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+  const { userProfile, inputText, setUserProfile, setInputText} = useUserDataProvider();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
-    await fetchListOfLLMs();
+    console.log(await fetchListOfLLMs() as LLMProfile);
 
     setIsLoading(true);
 
@@ -47,6 +38,7 @@ export const InputBox = () => {
           placeholder="tell us more about your business artificial-intelligence use cases!"
           size='lg'
           style={{ width: '100%' }}
+          value={inputText ?? ''}
         />
         <Button disabled={isLoading} onClick={handleSubmit}>{isLoading ? 'Searching...' : 'Enter'}</Button>
       </div>

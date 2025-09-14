@@ -7,7 +7,8 @@ export const fetchListOfLLMs = async () => {
     if (!response) throw new Error('API is invalid!');
 
     const result = await response.json();
-    console.log(result);
+    
+    return result;
   } catch (e) {
     console.log(e);
   }
