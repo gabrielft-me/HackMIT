@@ -2,15 +2,38 @@ import { useState } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import { getUserProfile } from "../api/claude";
 
+interface UserProfile {
+  size_of_company: number;
+  current_model: string | null;
+  business_model: "B2B" | "B2C";
+  type_of_data: string;
+  amount_of_latency: number | null;
+  data_sensitivity: "low" | "medium" | "high" | "critical";
+  savings: number;
+}
+
 export const InputBox = () => {
   const [inputText, setInputText] = useState<string>("");
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    console.log(
-      getUserProfile(
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await getUserProfile(
         "I am a pharmacy owner currently using ChatGPT 5. I run basic user service queries daily, with around 8000 customer queries per week. What is the most optimal model that balances efficiency without sacrificing accuracy/performance."
-      )
-    );
+      );
+
+      if ("type" in response && response.type === "text") {
+        const profile = JSON.parse(response.text);
+        setUserProfile(profile);
+      }
+    } catch (error) {
+      console.error("Error processing user profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -21,28 +44,16 @@ export const InputBox = () => {
           type="user-input"
           placeholder="Tell us about your business AI use cases"
         />
-        <Button
-          variant="success"
-          style={{
-            backgroundColor: "#14532d", // deeper green
-            borderColor: "#14532d",
-            color: "#fff",
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "1.5rem",
-            padding: 0,
-            marginLeft: "8px",
-          }}
-          onClick={handleSubmit}
-          aria-label="Submit"
-        >
-          <span style={{ fontSize: "1.3em" }}>✈️</span>
+        <Button disabled={isLoading} onClick={handleSubmit}>
+          {isLoading ? "Searching..." : "Enter"}
         </Button>
       </div>
+      {userProfile && (
+        <div className="profile-display mt-3">
+          <h3>User Profile:</h3>
+          <pre>{JSON.stringify(userProfile, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };

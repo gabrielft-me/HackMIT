@@ -9,12 +9,12 @@ export const getUserProfile = async (userInput: string) => {
       role: "user",
       content: [{
         type: "text",
-        text: `Reference ONLY the following user input data: ${userInput}. Your output must follow a JSON format, with the following data 'size_of_company' where size should be numeric and inferred when needed, 'current_model' where current_model should only have data if mentioned by the user, 'business_model' where the data is either B2B or B2C, 'type_of_data' where the field is either text, string, etc; 'amount_of_latency' where the field should be filled if mentioned otherwise null, 'data_sensitivity' where you should determine how sensitive the data is between low, medium, high, and critical; and 'savings' where you will estimate the amount of savings for the user switching to the service. Create a user profile based on the previously mentioned fields, and return an array of three objects with these fields.`
+        text: `Reference ONLY the following user input data: ${userInput}. Your output must follow a JSON format, with the following keys 'size_of_company' where value should be numeric and inferred a range based on the company type and number of customers received, key 'current_model' where value should only have data if mentioned by the user, key 'business_model' where the value is either B2B or B2C, key 'type_of_data' where the value is either text, string, etc; key 'amount_of_latency' where the value should be filled if mentioned otherwise null, key 'data_sensitivity' where you should determine the value based on how sensitive the data is between low, medium, high, and critical levels; and key 'savings' where the value will be an estimate of the amount of savings for the user switching to the service in United States Dollars (USD). Do not add any other fields besides those mentioned in this request. Create a user profile based on the previously mentioned fields, and return the three objects with these fields.`
       }]
     }],
     max_tokens: 500
   });
 
-  return message.content;
+  return message.content[0];
 };
 
