@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import { getUserProfile } from "../api/claude";
+import { fetchListOfLLMs } from "../api/fetchListOfLLMs";
 
-interface UserProfile {
+export interface UserProfile {
   size_of_company: number;
   current_model: string | null;
   business_model: 'B2B' | 'B2C';
@@ -18,18 +19,21 @@ export const InputBox = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
+    await fetchListOfLLMs();
+
     setIsLoading(true);
 
     try {
-      const response = await getUserProfile('I am a pharmacy owner currently using ChatGPT 5. I run basic user service queries daily, with around 8000 customer queries per week. What is the most optimal model that balances efficiency without sacrificing accuracy/performance.');
+      const response = await getUserProfile(inputText);
 
       if ('type' in response && response.type === 'text') {
         const profile = JSON.parse(response.text);
         setUserProfile(profile);
+        setIsLoading(false);
+        // add router step here
       }
     } catch (error) {
       console.error('Error processing user profile:', error);
-    } finally {
       setIsLoading(false);
     }
   }
