@@ -10,24 +10,18 @@ const SearchPage = () => {
         </div>
       </div>
       {/* Flexbox containers */}
-      <div className="row flex-grow-1" style={{ minHeight: '60vh', display: 'flex' }}>
-        <div className="col-12 col-md-4 d-flex">
-          <div className="flex-fill border rounded bg-light m-2 p-3">
-            <h5>Container 1</h5>
-            {/* Content here */}
-          </div>
+      <div className="d-flex flex-row flex-grow-1" style={{ minHeight: '60vh' }}>
+        <div className="flex-fill border rounded bg-light m-2 p-3">
+          <h5>Container 1</h5>
+          {/* Content here */}
         </div>
-        <div className="col-12 col-md-4 d-flex">
-          <div className="flex-fill border rounded bg-light m-2 p-3">
-            <h5>Container 2</h5>
-            {/* Content here */}
-          </div>
+        <div className="flex-fill border rounded bg-light m-2 p-3">
+          <h5>Container 2</h5>
+          {/* Content here */}
         </div>
-        <div className="col-12 col-md-4 d-flex">
-          <div className="flex-fill border rounded bg-light m-2 p-3">
-            <h5>Container 3</h5>
-            {/* Content here */}
-          </div>
+        <div className="flex-fill border rounded bg-light m-2 p-3">
+          <h5>Container 3</h5>
+          {/* Content here */}
         </div>
       </div>
     </div>

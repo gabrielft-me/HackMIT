@@ -1,18 +1,20 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-export const getOptimalModel = async (userInput: string) => {
+export const getUserProfile = async (userInput: string) => {
   const anthropic = new Anthropic({dangerouslyAllowBrowser: true, apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY});
 
-  return await anthropic.messages.create({
+  const message = await anthropic.messages.create({
     model: 'claude-3-5-haiku-latest',
     messages: [{
       role: "user",
       content: [{
         type: "text",
-        text: `Reference ONLY the following user input data: ${userInput}. Only explain in simple, concise language. You are evaluating effective AI models from all of Anthropic's offerings. Only reference available AI models from the mentioned resource. Only use the following definition of 'optimal:' most accurate AI model while minimizing the number of parameters for the given user profile. ALWAYS Return a JSON containing three results with two attributes numeric value 'ranking' referencing the relative performance; 'model-title' referencing the name of the model; and 'explanation' explaining why the listed model is most efficient, emphasizing sustainability. List each object from most to least optimal. If the user mentions an existing AI/LLM agent and it is different from your results, compare why the results are better for each result.`
+        text: `Reference ONLY the following user input data: ${userInput}. Your output must follow a JSON format, with the following data 'size_of_company' where size should be numeric and inferred when needed, 'current_model' where current_model should only have data if mentioned by the user, 'business_model' where the data is either B2B or B2C, 'type_of_data' where the field is either text, string, etc; 'amount_of_latency' where the field should be filled if mentioned otherwise null, 'data_sensitivity' where you should determine how sensitive the data is between low, medium, high, and critical; and 'savings' where you will estimate the amount of savings for the user switching to the service. Create a user profile based on the previously mentioned fields, and return an array of three objects with these fields.`
       }]
     }],
     max_tokens: 500
   });
+
+  return message.content;
 };
 
