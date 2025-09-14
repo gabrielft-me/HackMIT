@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -14,6 +14,35 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.input-container .form-control {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .input-container .form-control {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-container .form-control {
+    max-width: 100%;
+  }
+  
+  .input-container button {
+    margin-top: 1rem;
+  }
 }
 
 label {
@@ -39,4 +68,17 @@ button {
 
 button:hover {
   background-color: #535bf2;
+}
+
+.profile-display {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.profile-display pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
