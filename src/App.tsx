@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
-import SearchPage from "./pages/SearchPage";
 import About from "./pages/About";
 import { Logo } from "./components/Logo";
 import { UserDataProvider } from "./providers/UserDataProvider";
@@ -46,11 +45,6 @@ const App: React.FC = () => {
                     About
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/SearchPage">
-                    SearchPage
-                  </Link>
-                </li>
               </ul>
             </div>
           </div>
@@ -59,7 +53,6 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/About" element={<About />} />
-            <Route path="/SearchPage" element={<SearchPage />} />
           </Routes>
         </div>
       </Router>

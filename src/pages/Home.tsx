@@ -19,22 +19,6 @@ import { InputBox } from "../components/InputBox";
 const Home: React.FC = () => {
   return (
     <>
-      {/* Navbar */}
-      <Navbar bg="light" expand="lg" className="px-4">
-        <Navbar.Brand as={Link} to="/">
-          <Logo width={36} height={30} />
-          <span style={{ marginLeft: 5 }}>AIPlug</span>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link href="#usecases">Our Goals</Nav.Link>
-            <Nav.Link as={Link} to="/About">
-              About
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
 
       {/* Hero Section */}
       <Container fluid className="text-center py-5 bg-light">
