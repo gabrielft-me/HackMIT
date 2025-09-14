@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { Button, FormControl } from "react-bootstrap";
+import { getUserProfile } from "../api/claude";
 
 export const InputBox = () => {
   const [inputText, setInputText] = useState<string>('')
 
   const handleSubmit = () => {
-    console.log(inputText ? inputText : 'no text');
+    console.log(getUserProfile('test'));
   }
   
   return (<div className="container">
