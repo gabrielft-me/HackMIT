@@ -14,6 +14,7 @@ import {
   Carousel,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { InputBox } from "../components/InputBox";
 
 const Home: React.FC = () => {
   return (
@@ -27,13 +28,10 @@ const Home: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#usecases">Use Cases</Nav.Link>
+            <Nav.Link href="#usecases">Our Goals</Nav.Link>
             <Nav.Link as={Link} to="/About">
               About
             </Nav.Link>
-            <Button variant="dark" className="ms-3">
-              Request a Quote
-            </Button>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -45,56 +43,47 @@ const Home: React.FC = () => {
           Our tool will help you find the most efficient AI models to help your
           business save money and the environment.
         </p>
-        <Button as={Link} to="/" variant="dark">
-          Get Started
-        </Button>
+        <div className="d-flex justify-content-center mt-4">
+          <div style={{ width: "1000px", maxWidth: "100%" }}>
+            <InputBox />
+          </div>
+        </div>
       </Container>
 
-      {/* Use Cases */}
+      {/* Our Goals */}
       <Container id="usecases" className="py-5">
-        <h2 className="mb-4">Use Cases</h2>
+        <h2 className="mb-4">Our Goals</h2>
         <Row>
-          {["SEO", "PPC Ads", "Social Media", "Email Marketing"].map(
-            (title, i) => (
-              <Col md={3} key={i} className="mb-3">
-                <Card className="h-100 shadow-sm">
-                  <Card.Body>
-                    <Card.Title>{title}</Card.Title>
-                    <Card.Text>
-                      Learn more about {title.toLowerCase()}.
-                    </Card.Text>
-                    <Button variant="outline-dark" size="sm">
-                      Learn More
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            )
-          )}
+          {[
+            {
+              title: "Sustainability",
+              description:
+                "We help you choose AI models that minimize energy usage and reduce your carbon footprint.",
+            },
+            {
+              title: "Maintaining Performance",
+              description:
+                "Our recommendations ensure you get efficient models without sacrificing speed or accuracy.",
+            },
+            {
+              title: "Cost Efficiency",
+              description:
+                "Save money by deploying models that are optimized for your business needs and budget.",
+            },
+          ].map((goal, i) => (
+            <Col md={4} key={i} className="mb-3">
+              <Card className="h-100 shadow-sm">
+                <Card.Body>
+                  <Card.Title>{goal.title}</Card.Title>
+                  <Card.Text>{goal.description}</Card.Text>
+                  <Button variant="outline-dark" size="sm">
+                    Learn More
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
         </Row>
-      </Container>
-
-      {/* Working Process */}
-      <Container className="py-5">
-        <h2>Our Working Process</h2>
-        <Accordion>
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>01 Consultation</Accordion.Header>
-            <Accordion.Body>
-              We define your goals and strategy together.
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="1">
-            <Accordion.Header>02 Research & Strategy</Accordion.Header>
-            <Accordion.Body>
-              Market research and actionable planning.
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="2">
-            <Accordion.Header>03 Implementation</Accordion.Header>
-            <Accordion.Body>Execution of campaigns and tactics.</Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
       </Container>
 
       {/* Team */}
@@ -129,34 +118,6 @@ const Home: React.FC = () => {
             </Col>
           ))}
         </Row>
-      </Container>
-
-      {/* Contact Form */}
-      <Container className="py-5 bg-light" id="contact">
-        <h2>Contact Us</h2>
-        <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter your name" />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Enter your email" />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Form.Group className="mb-3">
-            <Form.Label>Message</Form.Label>
-            <Form.Control as="textarea" rows={3} />
-          </Form.Group>
-          <Button variant="dark" type="submit">
-            Send Message
-          </Button>
-        </Form>
       </Container>
 
       {/* Footer */}
