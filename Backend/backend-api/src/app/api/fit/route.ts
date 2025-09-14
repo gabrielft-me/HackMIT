@@ -1,52 +1,45 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { env } from '@/env';
-
-const inputSchema = z.object({
-  size_of_company: z.string().min(1),
-  ai_service_in_usage: z.string().min(1),
-  business_model: z.string().min(1),
-  type_of_data_processed: z.string().min(1),
-  amount_of_latency: z.string().min(1),
-  data_sensitivity: z.string().min(1),
-  savings: z.string().min(1),
-});
-
-const normalizedSchema = z.object({
-  company_size: z.enum(['solo', 'startup', 'smb', 'midmarket', 'enterprise']),
-  current_ai_provider: z.enum(['openai', 'anthropic', 'google', 'other']).nullable(),
-  business_model: z.enum(['saas', 'marketplace', 'agency', 'consulting', 'consumer_app', 'other']),
-  data_types: z.array(z.enum(['pii', 'phi', 'code', 'documents', 'multimedia', 'other'])),
-  latency_requirement_ms: z.number().int().nonnegative(),
-  data_sensitivity: z.enum(['low', 'medium', 'high', 'regulated']),
-  savings_goal_usd_per_month: z.number().nonnegative(),
-});
-
-export type Normalized = z.infer<typeof normalizedSchema>;
+import { supabaseAdmin } from '@/lib/supabase';
 
 const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 
 export async function POST(req: NextRequest) {
   try {
     const json = await req.json();
-    const parsed = inputSchema.parse(json);
+    const data = json as any;
 
-    const system = `You transform free-form company info into a normalized JSON used to compare against model options for cost optimization.`;
+    // Store incoming payload in Supabase (JSONB)
+    try {
+      const { error: insertError } = await supabaseAdmin
+        .from('fit_submissions')
+        .insert({ payload: data });
+      if (insertError) {
+        // Do not fail the request if storage fails
+      }
+    } catch {
+      // Swallow unexpected errors from client
+    }
 
-    const userPrompt = `Given the following company info, map it to the normalized JSON schema.
+    // Fetch available models from Supabase
+    const { data: unslothModels, error: unslothError } = await supabaseAdmin
+      .from('unsloth_models')
+      .select('*');
+    if (unslothError) {
+      return NextResponse.json({ error: `Failed to load unsloth_models: ${unslothError.message}` }, { status: 500 });
+    }
 
-Company info (keys are in English):
-- size_of_company: ${parsed.size_of_company}
-- ai_service_in_usage: ${parsed.ai_service_in_usage}
-- business_model: ${parsed.business_model}
-- type_of_data_processed: ${parsed.type_of_data_processed}
-- amount_of_latency: ${parsed.amount_of_latency}
-- data_sensitivity: ${parsed.data_sensitivity}
-- savings: ${parsed.savings}
+    const system = `You are an expert AI model selection assistant. Given user requirements and a catalog of available models from a table named unsloth_models, pick the TOP 3 models that best fit the user's needs based on it's trainabily with LoRA and effiency.
+Return ONLY a minified JSON array with exactly 3 objects. Each object MUST strictly match the row schema from unsloth_models (same field names and types). Do not include any extra fields or explanations.`;
 
-Normalized JSON schema (respond with ONLY minified JSON that conforms):
-${normalizedSchema.toString()}`;
+    const userPrompt = `User requirements JSON (from frontend):
+${JSON.stringify(data)}
+
+Available models JSON array (from unsloth_models):
+${JSON.stringify(unslothModels ?? [])}
+
+Respond with ONLY a minified JSON array of length 3 containing the selected rows in the same JSON shape as unsloth_models.`;
 
     const completion = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-latest',
@@ -63,19 +56,11 @@ ${normalizedSchema.toString()}`;
       return NextResponse.json({ error: 'Invalid response from Claude' }, { status: 502 });
     }
 
-    let normalized: unknown;
-    try {
-      normalized = JSON.parse(content.text);
-    } catch {
-      return NextResponse.json({ error: 'Claude did not return valid JSON' }, { status: 502 });
-    }
-
-    const validated = normalizedSchema.parse(normalized);
-    return NextResponse.json({ normalized: validated });
+    return new Response(content.text, {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    });
   } catch (err: unknown) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: err.issues }, { status: 400 });
-    }
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });
   }
