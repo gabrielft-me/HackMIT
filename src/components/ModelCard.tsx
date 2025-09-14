@@ -1,4 +1,4 @@
-import { Card, ProgressBar } from 'react-bootstrap';
+import { Card, ProgressBar } from "react-bootstrap";
 
 interface ModelCardProps {
   modelName: string;
@@ -11,21 +11,21 @@ export const ModelCard: React.FC<ModelCardProps> = ({
   modelName,
   complexityDifference,
   energyEfficiencyDifference,
-  percentageGain
+  percentageGain,
 }) => {
   return (
     <Card className="h-100 shadow-sm">
       <Card.Body>
         <Card.Title className="text-primary mb-3">{modelName}</Card.Title>
-        
+
         <div className="mb-3">
           <div className="d-flex justify-content-between align-items-center mb-1">
             <span className="text-muted">Complexity Reduction</span>
             <span className="small">{complexityDifference}%</span>
           </div>
-          <ProgressBar 
-            variant="success" 
-            now={complexityDifference} 
+          <ProgressBar
+            variant="success"
+            now={complexityDifference}
             label={`${complexityDifference}%`}
           />
         </div>
@@ -33,12 +33,14 @@ export const ModelCard: React.FC<ModelCardProps> = ({
         <div className="mb-3">
           <div className="d-flex justify-content-between align-items-center mb-1">
             <span className="text-muted">Energy Efficiency</span>
-            <span className="small">{(energyEfficiencyDifference * 100).toFixed(1)}%</span>
+            <span className="small">
+              {Math.abs(energyEfficiencyDifference * 100).toFixed(1)}%
+            </span>
           </div>
-          <ProgressBar 
-            variant="info" 
-            now={energyEfficiencyDifference * 100} 
-            label={`${(energyEfficiencyDifference * 100).toFixed(1)}%`}
+          <ProgressBar
+            variant="info"
+            now={Math.abs(energyEfficiencyDifference * 100)}
+            label={`${Math.abs(energyEfficiencyDifference * 100).toFixed(1)}%`}
           />
         </div>
 
