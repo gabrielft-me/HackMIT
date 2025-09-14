@@ -1,27 +1,22 @@
-import { useState } from 'react'
 import './App.css'
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import Home from './pages/Home'
+import SearchPage from './pages/SearchPage'
+import About from './pages/About'
 
-function App() {
-  const [inputText, setInputText] = useState<string>('')
-
-  const handleSubmit = () => {
-    console.log(inputText)
-  }
+const App: React.FC = () => {
 
   return (
-    <div className="container">
-      <div className="image-placeholder"></div>
-      <div className="input-container">
-        <input
-          id="test-input"
-          type="text"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          placeholder="test"
-        />
-        <button onClick={handleSubmit}>Enter</button>
-      </div>
-    </div>
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> |
+        <Link to="/About">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+      </Routes>
+    </Router>
   )
 }
 

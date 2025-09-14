@@ -4,13 +4,6 @@
   padding: 2rem;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
 .image-placeholder {
   width: 200px;
   height: 200px;
