@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import { getUserProfile } from "../api/claude";
-import { fetchListOfLLMs } from "../api/fetchListOfLLMs";
 import { useUserDataProvider } from "../providers/UserDataProvider";
-import type { LLMProfile } from "../interfaces/LLMProfile";
+import { useNavigate } from "react-router-dom";
 
 export const InputBox = () => {
-  const { userProfile, inputText, setUserProfile, setInputText} = useUserDataProvider();
+  const { inputText, setUserProfile, setInputText} = useUserDataProvider();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
-    console.log(await fetchListOfLLMs() as LLMProfile);
-
     setIsLoading(true);
-
     try {
       const response = await getUserProfile(inputText);
 
@@ -21,7 +19,7 @@ export const InputBox = () => {
         const profile = JSON.parse(response.text);
         setUserProfile(profile);
         setIsLoading(false);
-        // add router step here
+        navigate('/SearchPage')
       }
     } catch (error) {
       console.error('Error processing user profile:', error);
@@ -42,12 +40,6 @@ export const InputBox = () => {
         />
         <Button disabled={isLoading} onClick={handleSubmit}>{isLoading ? 'Searching...' : 'Enter'}</Button>
       </div>
-      {userProfile && (
-        <div className="profile-display mt-3">
-          <h3>User Profile:</h3>
-          <pre>{JSON.stringify(userProfile, null, 2)}</pre>
-        </div>
-      )}
     </div>
   )
 }

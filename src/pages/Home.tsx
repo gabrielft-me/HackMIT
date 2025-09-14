@@ -76,9 +76,9 @@ const Home: React.FC = () => {
                 <Card.Body>
                   <Card.Title>{goal.title}</Card.Title>
                   <Card.Text>{goal.description}</Card.Text>
-                  <Button variant="outline-dark" size="sm">
+                  <Link to="/About" className="btn btn-outline-dark btn-sm">
                     Learn More
-                  </Button>
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>
@@ -93,7 +93,7 @@ const Home: React.FC = () => {
           {[
             {
               name: "Gabriel Fagundest",
-              bio: "Back-end and integration",
+              bio: "RAG Mode, Back-end, and integration",
             },
             {
               name: "Connor Lai",
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
 
       {/* Footer */}
       <footer className="bg-dark text-light text-center py-4">
-        <p>© 2025 AIPlug. EDIT LATER</p>
+        <p>2025 AIPlug</p>
       </footer>
     </>
   );

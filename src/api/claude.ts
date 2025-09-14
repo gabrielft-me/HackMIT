@@ -1,8 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
+import type { UserProfile } from "../interfaces/userProfile";
+
+const anthropic = new Anthropic({dangerouslyAllowBrowser: true, apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY});
 
 export const getUserProfile = async (userInput: string) => {
-  const anthropic = new Anthropic({dangerouslyAllowBrowser: true, apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY});
-
   const message = await anthropic.messages.create({
     model: 'claude-3-5-haiku-20241022',
     messages: [{
@@ -18,3 +19,18 @@ export const getUserProfile = async (userInput: string) => {
   return message.content[0];
 };
 
+export const getOptimalModels = async (userProfile: UserProfile, listOfLLMs: string) => {
+  const message = await anthropic.messages.create({
+    model: 'claude-3-5-haiku-20241022',
+    messages: [{
+      role: "user",
+      content: [{
+        type: "text",
+        text: `Reference ONLY the following user input data: ${listOfLLMs}. Only respond in JSON format. Always create a parent object "most-efficient-models" to display the following: model-name where value is the name of the model, complexity-difference where the value is the percentage difference in parameter amount; energy-efficiency-difference where the value is the fraction of power used by a new model versus the old; and percentage-gain where value is compared to computer power of previous LLM proivder. NEVER EVER add parameters different than listed above. What are the most optimal AI models that can be used to optimize efficiency?`
+      }]
+    }],
+    max_tokens: 500
+  });
+  
+  return message.content[0];
+};
