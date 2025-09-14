@@ -14,6 +14,7 @@ import {
   Carousel,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { InputBox } from "../components/InputBox";
 
 const Home: React.FC = () => {
   return (
@@ -31,9 +32,6 @@ const Home: React.FC = () => {
             <Nav.Link as={Link} to="/About">
               About
             </Nav.Link>
-            <Button variant="dark" className="ms-3">
-              Request a Quote
-            </Button>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -45,9 +43,11 @@ const Home: React.FC = () => {
           Our tool will help you find the most efficient AI models to help your
           business save money and the environment.
         </p>
-        <Button as={Link} to="/" variant="dark">
-          Get Started
-        </Button>
+        <div className="d-flex justify-content-center mt-4">
+          <div style={{ width: "1000px", maxWidth: "100%" }}>
+            <InputBox />
+          </div>
+        </div>
       </Container>
 
       {/* Use Cases */}
