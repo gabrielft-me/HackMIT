@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.62.0",
+    "@anthropic-ai/s1k": "^0.62.0",
     "bootstrap": "^5.3.8",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",

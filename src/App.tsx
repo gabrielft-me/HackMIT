@@ -3,13 +3,20 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import SearchPage from './pages/SearchPage'
 import About from './pages/About'
+import { Logo } from './components/Logo'
+
 
 const App: React.FC = () => {
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to="/">MyApp</Link>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+        <div className="container d-flex align-items-center">
+          <div className="me-2 d-flex align-items-center">
+            <div>
+              <Logo />
+            </div>
+          </div>
+          <Link className="navbar-brand" to="/">AIPlug</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -22,6 +29,9 @@ const App: React.FC = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/About">About</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/SearchPage">SearchPage</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -30,6 +40,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/About" element={<About />} />
+          <Route path="/SearchPage" element={<SearchPage />} />
         </Routes>
       </div>
     </Router>
